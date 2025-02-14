@@ -29,9 +29,10 @@ class Tax:
     Calculates tax based on the above tuple list which is the task bracket
     """
     def taxIncome(self):
+        annual=self.income*12
         for i in range(len(self.tax_brack)):
-            if(self.tax_brack[i][0]<self.income and self.income<self.tax_brack[i][1]):
-                tax=(self.income-self.tax_brack[i][0])*self.tax_brack[i][2]+self.tax_brack[i][3]
+            if(self.tax_brack[i][0]<annual and annual<self.tax_brack[i][1]):
+                tax=((annual-self.tax_brack[i][0])*self.tax_brack[i][2]+self.tax_brack[i][3])/12
                 return tax
     
 
@@ -46,11 +47,11 @@ class Tax:
         return total
         
     def taxed_inc(self):
-        total=self.income-self.taxIncome()
-        return total
+        total=self.income - self.taxIncome()
+        return float(total)
         
     def netIncome(self):
-        net_income= (self.income-self.taxIncome())-self.tot_Expense()
+        net_income= self.taxed_inc()-self.tot_Expense()
         return net_income
 
 
@@ -69,7 +70,7 @@ def disp_budget(income):
     Calc=Tax(income)
     print(dash)
     print(f"Gross Monthly Income (Before Tax): R{float(income)}")
-    print(f"Gross Monthly Income (After Tax): R{float(income-Calc.taxIncome())}")
+    print(f"Gross Monthly Income (After Tax): R{(income-Calc.taxIncome()):.2f}")
     print(dash)
     print("\n\t\t\t\tExpenses")
     print(dash)
