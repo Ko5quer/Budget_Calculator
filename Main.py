@@ -1,9 +1,14 @@
+#declaring as a global variagle
 income=0
+
+"""
+Calculates the taxes and expenses based on the user income
+"""
 class Tax:
     def __init__(self, income):
         self.income=income
 
-        #Stores expenses and percentage spent
+        #Stores expenses and average spent on expenses in percentage
         self.exp_list=(
             ("Utilities",0.05),
             ("Rent/housing",0.15),
@@ -61,34 +66,54 @@ def menu():
     print("\n\t1. Create New Entry \n")
     print("\t0. Exit \n")
 
+
+"""
+Function handles the ui and calling all necessary functions to run the code
+"""
 def disp_budget(income):
+    #For ui purposes
     dash="-"*60
     line="_"*60
+
     print("\n\t\t\t\tMonthly Budget")
     print(line)
     print("\n\t\t\t\tIncome")
-    Calc=Tax(income)
+
+    Calc=Tax(income) #Objects of the class tax
     print(dash)
+
+    #Displays the income before and after tax
     print(f"Gross Monthly Income (Before Tax): R{float(income)}")
     print(f"Gross Monthly Income (After Tax): R{(income-Calc.taxIncome()):.2f}")
     print(dash)
     print("\n\t\t\t\tExpenses")
     print(dash)
+
+    #Displays the expenses based of the tuple list self.exp
     for i in range(len(Calc.exp_list)):
         print(f"{Calc.exp_list[i][0]}: \tR{(float(Calc.exp_list[i][1])*float(Calc.taxed_inc()))}")
+    
+    #Total expenses spent and net income is displayed
     print(f"Total Expenses: R{float(Calc.tot_Expense())}")
     print(f"{dash}\n")
     print(f"Net Income: R{float(Calc.netIncome())}")
     print(f"{line}\n")
 
 
+#Main function
 if __name__=="__main__":
+
+    #Menu system that stops when the user wants
     while True:
         menu()
         choice=int(input("Select an option: "))
         if(choice==1):
+
+            #Asks user for code and income input
             code=input("Enter user code: ")
             income=float(input("Enter gross income before tax: "))
+
+            #Run function that runs everything
             disp_budget(income)
         elif(choice==2):
             break
