@@ -30,4 +30,4 @@ This project helps users calculate their monthly budget based on their income an
 3. Run the Python script and follow the prompts:
    ```bash
    python Main.py
-   ``
+   ```
