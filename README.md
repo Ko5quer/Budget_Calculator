@@ -24,7 +24,7 @@ This project helps users calculate their monthly budget based on their income an
 
 1. Clone or download the repository. 
 ```
- git clone Ko5quer/Budget_Calculator
+ git clone https://github.com/Ko5quer/Budget_Calculator.git
 ```
 2. Open a terminal and navigate to the directory containing the Python file.
 3. Run the Python script and follow the prompts:
