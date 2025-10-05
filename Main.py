@@ -1,8 +1,7 @@
-#declaring as a global variagle
-income=0
+
 
 """
-Calculates the taxes and expenses based on the user income
+Calculates the taxes and expenses based on the user income and tax bracket
 """
 class Tax:
     def __init__(self, income):
@@ -17,10 +16,11 @@ class Tax:
             ("Groceries",0.1),
             ("Communication",0.02)
             )
-
-        #2D array (minThreshold,max threshold, Tax Rate, Base Tax)
-        #if income<Threshold
-        #   Tax=(income-minThreshold) * Rate + Tax Base
+        """
+        2D array (minThreshold, max threshold, Tax Rate, Base Tax)
+        if income<Threshold then it meets the threshhold in the tax bracket
+        Formula for calculating tax:  Tax=(income-minThreshold) * Rate + Tax Base
+        """
         self.tax_brack=(
         (1, 237100, 0.18, 0), 
         (237101, 370500, 0.26, 42678),
@@ -31,7 +31,8 @@ class Tax:
         (1817002,100000000000000,0.45, 644489)
         )
     """
-    Calculates tax based on the above tuple list which is the task bracket
+    Calculates tax based on the above tuple list which is the tax bracket and commpares values according
+    to the tax bracket to see which tax bracket it falls under
     """
     def taxIncome(self):
         annual=self.income*12
@@ -58,7 +59,26 @@ class Tax:
     def netIncome(self):
         net_income= self.taxed_inc()-self.tot_Expense()
         return net_income
-
+        
+    def dispBudget(self):
+        lines="_"*50
+        dash="-"*50
+        print("\n\t\tMonthly Budget")
+        print(lines)
+        print("\n\t\tIncome")
+        print(dash)
+        print(f"Gross Monthly Income (Before Tax): R{self.income:.2f}")
+        print(f"Gross Monthly Income (After Tax): R{self.taxed_inc():.2f}")
+        print(dash)
+        print("\n\t\tExpenses")
+        print(dash)
+        for i in range(len(self.exp_list)):
+            expense=float(self.exp_list[i][1])* float(self.taxed_inc())
+            print(f"{self.exp_list[i][0]}:\tR{expense:.2f}")
+        print(dash)
+        netIncome=self.netIncome()
+        print(f"\nNet Income: R{netIncome:.2f}\n")
+        print(lines)
 
 def menu():
     print("\nBudget Portal")
@@ -66,38 +86,6 @@ def menu():
     print("\n\t1. Create New Entry \n")
     print("\t0. Exit \n")
 
-
-"""
-Function handles the ui and calling all necessary functions to run the code
-"""
-def disp_budget(income):
-    #For ui purposes
-    dash="-"*60
-    line="_"*60
-
-    print("\n\t\t\t\tMonthly Budget")
-    print(line)
-    print("\n\t\t\t\tIncome")
-
-    Calc=Tax(income) #Objects of the class tax
-    print(dash)
-
-    #Displays the income before and after tax
-    print(f"Gross Monthly Income (Before Tax): R{float(income)}")
-    print(f"Gross Monthly Income (After Tax): R{(income-Calc.taxIncome()):.2f}")
-    print(dash)
-    print("\n\t\t\t\tExpenses")
-    print(dash)
-
-    #Displays the expenses based of the tuple list self.exp
-    for i in range(len(Calc.exp_list)):
-        print(f"{Calc.exp_list[i][0]}: \tR{(float(Calc.exp_list[i][1])*float(Calc.taxed_inc()))}")
-    
-    #Total expenses spent and net income is displayed
-    print(f"Total Expenses: R{float(Calc.tot_Expense())}")
-    print(f"{dash}\n")
-    print(f"Net Income: R{float(Calc.netIncome())}")
-    print(f"{line}\n")
 
 
 #Main function
@@ -108,15 +96,20 @@ if __name__=="__main__":
         menu()
         choice=int(input("Select an option: "))
         if(choice==1):
-
             #Asks user for code and income input
             code=input("Enter user code: ")
-            income=float(input("Enter gross income before tax: "))
+            try:
+                income=float(input("Enter gross income before tax: "))
 
-            #Run function that runs everything
-            disp_budget(income)
-        elif(choice==2):
+                #Declaring class and callng class in the main functions
+                budget=Tax(income)
+                budget.dispBudget()
+            except ValueError:
+                print("Invalid input please enter a number")
+
+        elif(choice==0):
+            print("Exiting System. Goodbye!!!")
             break
         else:
-            print("Please choose between 1 and 2")
+            print("Please choose between 1 and 0")
 
